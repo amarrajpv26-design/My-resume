@@ -6,41 +6,50 @@ function validateEmail(email) {
 function sendMail(event) {
   event.preventDefault();
 
-  // Get the field values
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const subject = document.getElementById("subject").value.trim();
   const message = document.getElementById("message").value.trim();
 
-  // Check if any field is empty
   if (name === "") {
     alert("Please enter your name.");
+    document.getElementById("name").focus();
     return;
   }
+
   if (email === "") {
     alert("Please enter your email.");
+    document.getElementById("email").focus();
     return;
   }
+
   if (!validateEmail(email)) {
     alert("Please enter a valid email address.");
+    document.getElementById("email").focus();
     return;
   }
+
   if (subject === "") {
     alert("Please enter a subject.");
+    document.getElementById("subject").focus();
     return;
   }
+
   if (message === "") {
     alert("Please enter your message.");
+    document.getElementById("message").focus();
     return;
   }
 
-  // If all fields are valid, send email
-  let params = { name, email, subject, message };
+  const params = { name, email, subject, message };
 
   emailjs.send("service_rymbm47", "template_d3gd4zd", params)
-    .then(function(response) {
-      alert("Email Sent!!");
-    }, function(error) {
-      alert("FAILED... " + JSON.stringify(error));
+    .then(() => {
+      alert("Email sent successfully!");
+      // Optionally reset form here
+      document.querySelector("form").reset();
+    })
+    .catch(error => {
+      alert("Failed to send email: " + error.text);
     });
 }
